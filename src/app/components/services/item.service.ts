@@ -10,18 +10,15 @@ export class ItemService {
 
 	constructor(private http: HttpClient) { }
 
-	getItems(): Observable<any> {
+	getAllItems(): Observable<any> {
 		return this.http.get(this.basePath);
 	}
-
 	deleteItemByCode(code: string): Observable<any> {
 		return this.http.delete(this.basePath + code)
 	}
-
 	createItem(item: any): Observable<any> {
 		return this.http.post(this.basePath, item);
 	}
-
 	updateItem(id: number, item: any): Observable<any> {
 		return this.http.put(this.basePath + id, item);
 	}
