@@ -11,14 +11,22 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class InventoryComponent implements OnInit {
   items: any[]=[];
   action = 'Agregar';
+  codeToDelete='';
+  editCreateItemCard=false;
+  editDeleteItemCard=false;
+  edit=false;
   form: FormGroup;
+  formDelete: FormGroup;
   id: number | undefined;
   constructor(private formBuilder: FormBuilder,private toastr: ToastrService, private _itemService: ItemService) {
     this.form= this.formBuilder.group({
-      code:['',Validators.required,Validators.maxLength(7), Validators.minLength(7)],
+      code:['',[Validators.required,Validators.maxLength(7), Validators.minLength(7)]],
       name:['',Validators.required],
       description:['',Validators.required],
       quantity:['',Validators.required],
+    })
+    this.formDelete= this.formBuilder.group({
+      code:['',[Validators.required,Validators.maxLength(7), Validators.minLength(7)]]
     })
   }
 
@@ -47,21 +55,26 @@ export class InventoryComponent implements OnInit {
     } else {
       item.id= this.id;
       this._itemService.updateItem(this.id,item).subscribe( data => {
-        this.form.reset();
         this.action='Modificar';
-        this.id=undefined;
         this.toastr.info('El articulo fue actualizada con exito', 'Articulo actualizada')
+        this.getItems();
+        this.form.reset();
+        this.id=undefined;
       })
     }
+    this.cancelEditItem();
   }
   deleteItem(code:string){
     this._itemService.deleteItemByCode(code).subscribe( data => {
       this.toastr.error('El articulo fue eliminado con exito', 'Articulo eliminado');
       this.getItems();
+      this.formDelete.reset();
     })
+    this.cancelEditItem();
   }
-  editItem(item:any){
+  updateItem(item:any){
     this.action='Editar';
+    this.showCreateCard();
     this.id=item.id;
     this.form.patchValue({
       code: item.code,
@@ -70,5 +83,20 @@ export class InventoryComponent implements OnInit {
       quantity: item.quantity
     })
   }
-
+  cancelEditItem(){
+    this.edit=false;
+    this.editCreateItemCard=false;
+    this.editDeleteItemCard=false;
+  }
+  showCreateCard(){
+    this.edit=true;
+    this.editDeleteItemCard=false;
+    this.editCreateItemCard=true;
+  }
+  showDeleteCard(code: string){
+    this.codeToDelete=code;
+    this.edit=true;
+    this.editCreateItemCard=false;
+    this.editDeleteItemCard=true;
+  }
 }

@@ -1,57 +1,59 @@
 <div class="container mt-5">
-<!--    <div class="row">-->
-<!--        <div class="col-lg-8 offset-lg-2">-->
-<!--            <div class="card">-->
-<!--                <div class="card-body">-->
-<!--                    <h3 class="titulo">TARJETA CREDITO</h3>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
 
-    <div class="row mt-4">
-        <div class="col-lg-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="titulo">{{ action }} Articulo</h5>
+
+    <div class="d-flex justify-content-sm-around">
+        <button type="button" class="btn btn-warning" (click)="showCreateCard()">Agregar</button>
+        <button type="button" class="btn btn-danger" (click)="showDeleteCard('')">Eliminar</button>
+    </div>
+    <div class="row mt-4 justify-content-around">
+        <div *ngIf="edit" class="col-lg-6">
+            <div  class="card">
+                <div *ngIf="editCreateItemCard" class="card-item card-create-item" >
+                    <h5 class="card-title">{{ action }} Artículo</h5>
                     <form [formGroup]="form" (ngSubmit)="createItem()">
                         <div class="input-group input-group-lg mb-3">
-                            <span class="input-group-text">
-                                <i class="fas fa-user"
-                                   [class.green-icon]="this.form.get('code')?.valid"
-                                   [class.red-icon]="this.form.get('code')?.invalid && this.form.get('code')?.touched"></i>
-                            </span>
-                            <input formControlName="code" maxlength="7" type="text" class="form-control" placeholder="Código del artículo">
+                            <input formControlName="code" maxlength="7" type="text" class="form-control"
+                                   [class.green-input]="this.form.get('code')?.valid"
+                                   [class.red-input]="this.form.get('code')?.invalid && this.form.get('code')?.touched" placeholder="Código del artículo">
                         </div>
                         <div class="input-group input-group-lg mb-3">
-                            <span class="input-group-text">
-                                <i class="fas fa-user"
-                                   [class.green-icon]="this.form.get('name')?.valid"
-                                   [class.red-icon]="this.form.get('name')?.invalid && this.form.get('name')?.touched"></i>
-                            </span>
-                            <input formControlName="name"  type="text" class="form-control" placeholder="Nombre del artículo">
+                            <input formControlName="name"  type="text" class="form-control"
+                                   [class.green-input]="this.form.get('name')?.valid"
+                                   [class.red-input]="this.form.get('name')?.invalid && this.form.get('name')?.touched" placeholder="Nombre del artículo">
                         </div>
                         <div class="input-group input-group-lg mb-3">
-                            <span class="input-group-text">
-                                <i class="fas fa-user"
-                                   [class.green-icon]="this.form.get('description')?.valid"
-                                   [class.red-icon]="this.form.get('description')?.invalid && this.form.get('description')?.touched"></i>
-                            </span>
-                            <input formControlName="description"  type="text" class="form-control" placeholder="Descripción del artículo">
+                            <input formControlName="description"  type="text" class="form-control"
+                                   [class.green-input]="this.form.get('description')?.valid"
+                                   [class.red-input]="this.form.get('description')?.invalid && this.form.get('description')?.touched" placeholder="Descripción">
                         </div>
                         <div class="input-group input-group-lg mb-3">
-                            <span class="input-group-text">
-                                <i class="fas fa-user"
-                                   [class.green-icon]="this.form.get('quantity')?.valid"
-                                   [class.red-icon]="this.form.get('quantity')?.invalid && this.form.get('quantity')?.touched"></i>
-                            </span>
-                            <input formControlName="quantity"  type="number" class="form-control" placeholder="Cantidad inicial del artículo">
+                            <input  formControlName="quantity"  type="number" class="form-control"
+                                    [class.green-input]="this.form.get('quantity')?.valid"
+                                    [class.red-input]="this.form.get('quantity')?.invalid && this.form.get('quantity')?.touched" placeholder="Cantidad">
                         </div>
-                        <div class="d-grid gap-2">
-                            <button [disabled]="this.form.invalid" type="submit" class="btn btn-success btn-lg">
-                                <i class="fas fa-database"></i>&nbsp; Aceptar</button>
+                        <div class="d-flex justify-content-center">
+                            <button [disabled]="this.form.invalid" type="submit" class="btn btn-success">Enviar</button>&nbsp;&nbsp;
+                            <button type="submit" class="btn btn-danger" (click)="cancelEditItem()">Cancelar</button>
                         </div>
                     </form>
+
+
+                </div>
+                <div *ngIf="editDeleteItemCard" class="card-item card-delete-item">
+                    <h5 class="card-title">Eliminar Artículo</h5>
+                    <form [formGroup]="formDelete" (ngSubmit)="deleteItem(codeToDelete)">
+                        <div class="input-group input-group-lg mb-3">
+                            <input formControlName="code" [(ngModel)]='codeToDelete' maxlength="7" type="text" class="form-control"
+                                   [class.green-input]="this.formDelete.get('code')?.valid"
+                                   [class.red-input]="this.formDelete.get('code')?.invalid && this.formDelete.get('code')?.touched" placeholder="Código del artículo">
+                        </div>
+
+                        <div class="d-flex justify-content-center">
+                            <button [disabled]="this.formDelete.invalid" type="submit" class="btn btn-success">Enviar</button>&nbsp;&nbsp;
+                            <button type="submit" class="btn btn-danger" (click)="cancelEditItem()">Cancelar</button>
+                        </div>
+                    </form>
+
 
                 </div>
             </div>
@@ -67,12 +69,12 @@
                             <td>{{ item.name }}</td>
                             <td>{{ item.description }}</td>
                             <td>{{ item.quantity }}</td>
-<!--                            <td>-->
-<!--                                <i (click)="editarTarjeta(tarjeta)" class="far fa-edit text-info"></i>-->
-<!--                            </td>-->
-<!--                            <td>-->
-<!--                                <i (click)="eliminarTarjeta(tarjeta.id)" class="far fa-trash-alt text-danger"></i>-->
-<!--                            </td>-->
+                            <td>
+                                <i (click)="updateItem(item)" class="far fa-edit text-info"></i>
+                            </td>
+                            <td>
+                                <i (click)="showDeleteCard(item.code)" class="far fa-trash-alt text-danger"></i>
+                            </td>
                         </tr>
 
                         </tbody>
