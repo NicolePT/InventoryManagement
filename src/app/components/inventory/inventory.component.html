@@ -1,0 +1,84 @@
+<div class="container mt-5">
+<!--    <div class="row">-->
+<!--        <div class="col-lg-8 offset-lg-2">-->
+<!--            <div class="card">-->
+<!--                <div class="card-body">-->
+<!--                    <h3 class="titulo">TARJETA CREDITO</h3>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+
+    <div class="row mt-4">
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="titulo">{{ action }} Articulo</h5>
+                    <form [formGroup]="form" (ngSubmit)="createItem()">
+                        <div class="input-group input-group-lg mb-3">
+                            <span class="input-group-text">
+                                <i class="fas fa-user"
+                                   [class.green-icon]="this.form.get('code')?.valid"
+                                   [class.red-icon]="this.form.get('code')?.invalid && this.form.get('code')?.touched"></i>
+                            </span>
+                            <input formControlName="code" maxlength="7" type="text" class="form-control" placeholder="Código del artículo">
+                        </div>
+                        <div class="input-group input-group-lg mb-3">
+                            <span class="input-group-text">
+                                <i class="fas fa-user"
+                                   [class.green-icon]="this.form.get('name')?.valid"
+                                   [class.red-icon]="this.form.get('name')?.invalid && this.form.get('name')?.touched"></i>
+                            </span>
+                            <input formControlName="name"  type="text" class="form-control" placeholder="Nombre del artículo">
+                        </div>
+                        <div class="input-group input-group-lg mb-3">
+                            <span class="input-group-text">
+                                <i class="fas fa-user"
+                                   [class.green-icon]="this.form.get('description')?.valid"
+                                   [class.red-icon]="this.form.get('description')?.invalid && this.form.get('description')?.touched"></i>
+                            </span>
+                            <input formControlName="description"  type="text" class="form-control" placeholder="Descripción del artículo">
+                        </div>
+                        <div class="input-group input-group-lg mb-3">
+                            <span class="input-group-text">
+                                <i class="fas fa-user"
+                                   [class.green-icon]="this.form.get('quantity')?.valid"
+                                   [class.red-icon]="this.form.get('quantity')?.invalid && this.form.get('quantity')?.touched"></i>
+                            </span>
+                            <input formControlName="quantity"  type="number" class="form-control" placeholder="Cantidad inicial del artículo">
+                        </div>
+                        <div class="d-grid gap-2">
+                            <button [disabled]="this.form.invalid" type="submit" class="btn btn-success btn-lg">
+                                <i class="fas fa-database"></i>&nbsp; Aceptar</button>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card">
+                <div class="card-body">
+                    <table class="table">
+                        <tbody>
+                        <tr *ngFor="let item of items">
+                            <td>{{ item.id }}</td>
+                            <td>{{ item.code }}</td>
+                            <td>{{ item.name }}</td>
+                            <td>{{ item.description }}</td>
+                            <td>{{ item.quantity }}</td>
+<!--                            <td>-->
+<!--                                <i (click)="editarTarjeta(tarjeta)" class="far fa-edit text-info"></i>-->
+<!--                            </td>-->
+<!--                            <td>-->
+<!--                                <i (click)="eliminarTarjeta(tarjeta.id)" class="far fa-trash-alt text-danger"></i>-->
+<!--                            </td>-->
+                        </tr>
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
